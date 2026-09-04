@@ -97,9 +97,6 @@ public class EventController {
         page = page == null ? 1 : page;
         Integer firstIndex = (page - 1) * perPage;
         List<Event> output = new ArrayList<>();
-        for (int i = firstIndex; i < firstIndex + perPage; i++) {
-            output.add(eventList.get(i));
-        }
         try {
             for (int i = firstIndex; i < firstIndex + perPage; i++) {
                 output.add(eventList.get(i));
@@ -109,4 +106,3 @@ public class EventController {
             return ResponseEntity.ok(output);
         }
     }
-}
