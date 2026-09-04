@@ -132,7 +132,7 @@ public class EventController {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+                registry.addMapping("/events")
                         .allowedOrigins("http://localhost:5173");
             }
         };
