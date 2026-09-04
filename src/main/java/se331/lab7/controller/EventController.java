@@ -1,5 +1,7 @@
 package se331.lab7.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se331.lab7.entity.Event;
 
@@ -86,4 +88,9 @@ public class EventController {
                 .organizer("Brody Kill")
                 .build());
     }
+
+@GetMapping("/events")
+public ResponseEntity<?> getEventLists() {
+    return ResponseEntity.ok(eventList);
+}
 }
