@@ -1,7 +1,6 @@
 package se331.lab7.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,54 +9,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import se331.lab7.entity.Event;
-import se331.lab7.service.EventService;
+import se331.lab7.entity.Organizer;
+import se331.lab7.service.OrganizerService;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class EventController {
+public class OrganizerController {
+    final OrganizerService organizerService;
 
-    final EventService eventService;
-
-    @GetMapping("events")
-    public ResponseEntity<?> getEventLists(@RequestParam(value = "_limit", required = false) Integer perPage,
+    @GetMapping("organizers")
+    public ResponseEntity<?> getOrganizerLists(@RequestParam(value = "_limit", required = false) Integer perPage,
                                            @RequestParam(value = "_page", required = false) Integer page) {
-        List<Event> output = null;
-        Integer eventSize = eventService.getEventSize();
+        List<Organizer> output = null;
+        Integer eventSize = organizerService.getOrganizerSize();
         HttpHeaders responseHeader = new HttpHeaders();
         responseHeader.set("x-total-count", String.valueOf(eventSize));
 
         try {
-            output = eventService.getEvents(perPage, page);
+            output = organizerService.getOrganizer(perPage, page);
             return new ResponseEntity<>(output, responseHeader, HttpStatus.OK);
         } catch (IndexOutOfBoundsException ex) {
             return new ResponseEntity<>(output, responseHeader, HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("events/{id}")
-    public ResponseEntity<?> getEvent(@PathVariable("id") Long id) {
-        Event output = eventService.getEvent(id);
+    @GetMapping("organizers/{id}")
+    public ResponseEntity<?> getOrganizer(@PathVariable("id") Long id) {
+        Organizer output = organizerService.getOrganizer(id);
         if (output != null) {
             return ResponseEntity.ok(output);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The given id is not found");
         }
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
-                        .exposedHeaders("x-total-count");
-            }
-        };
     }
 }
