@@ -26,4 +26,9 @@ public class OrganizerServiceImpl implements OrganizerService {
     public Organizer getOrganizer(Long id) {
         return eventDao.getOrganizer(id);
     }
+
+    @Override
+    public Organizer save(Organizer organizer) {
+        return eventDao.save(organizer);
+    }
 }

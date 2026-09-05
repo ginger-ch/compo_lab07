@@ -7,4 +7,5 @@ public interface OrganizerService {
     Integer getOrganizerSize();
     List<Organizer> getOrganizer(Integer pageSize, Integer page);
     Organizer getOrganizer(Long id);
+    Organizer save(Organizer organizer);
 }

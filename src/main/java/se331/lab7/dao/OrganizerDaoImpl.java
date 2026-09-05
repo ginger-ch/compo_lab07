@@ -1,6 +1,7 @@
 package se331.lab7.dao;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import se331.lab7.entity.Organizer;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 
 @Repository
+@Profile("manual")
 public class OrganizerDaoImpl implements OrganizerDao {
     List<Organizer> organizerList;
 
@@ -60,6 +62,12 @@ public class OrganizerDaoImpl implements OrganizerDao {
                 .filter(event -> event.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+    @Override
+    public Organizer save(Organizer organizer) {
+        organizer.setId((long) (organizerList.size() + 1));
+        organizerList.add(organizer);
+        return organizer;
     }
 }
 

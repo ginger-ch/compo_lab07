@@ -7,4 +7,5 @@ public interface OrganizerDao {
     Integer getOrganizerSize();
     List<Organizer> getOrganizer(Integer page, Integer pageSize);
     Organizer getOrganizer(Long id);
+    Organizer save(Organizer organizer);
 }
