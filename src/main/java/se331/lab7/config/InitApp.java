@@ -8,6 +8,7 @@ import se331.lab7.entity.Event;
 import se331.lab7.entity.Organizer;
 import se331.lab7.repository.EventRepository;
 import se331.lab7.repository.OrganizerRepository;
+import jakarta.transaction.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final OrganizerRepository organizerRepository;
 
     @Override
+    @Transactional
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         Organizer org1, org2, org3;
         org1 = organizerRepository.save(Organizer.builder().name("CAMT").build());
