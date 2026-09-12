@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import se331.lab7.entity.Event;
 import se331.lab7.service.EventService;
+import se331.lab7.util.LabMapper;
 
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class EventController {
         responseHeaders.set("x-total-count", String.valueOf(pageOutput.getTotalElements()));
 
         try {
-            return ResponseEntity.ok().headers(responseHeaders).body(pageOutput.getContent());
+            return new ResponseEntity<>(LabMapper.INSTANCE.getEventDto(pageOutput.getContent()), responseHeaders, HttpStatus.OK);
         } catch (IndexOutOfBoundsException e) {
-            return ResponseEntity.ok().headers(responseHeaders).body(pageOutput.getContent());
+            return new ResponseEntity<>(LabMapper.INSTANCE.getEventDto(pageOutput.getContent()), responseHeaders, HttpStatus.OK);
         }
     }
 
@@ -39,7 +40,7 @@ public class EventController {
     public ResponseEntity<?> getEvent(@PathVariable("id") Long id) {
         Event output = eventService.getEvent(id);
         if (output != null) {
-            return ResponseEntity.ok(output);
+            return ResponseEntity.ok(LabMapper.INSTANCE.getEventDto(output));
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The given id is not found");
         }
@@ -60,6 +61,6 @@ public class EventController {
     @PostMapping("/events")
     public ResponseEntity<?> addEvent(@RequestBody Event event) {
         Event output = eventService.save(event);
-        return ResponseEntity.ok(output);
+        return ResponseEntity.ok(LabMapper.INSTANCE.getEventDto(output));
     }
 }
