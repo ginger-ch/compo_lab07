@@ -1,10 +1,9 @@
 package se331.lab7.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.Id;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -16,6 +15,8 @@ public class Organizer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
     Long id;
-    String organizationName;
-    String address;
+    String name;
+
+    @OneToMany(mappedBy = "organizer")
+    List<Event> ownEvents;
 }
