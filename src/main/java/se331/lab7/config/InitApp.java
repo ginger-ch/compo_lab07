@@ -80,7 +80,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .build());
         event4.setOrganizer(org3);
         org3.getOwnEvents().add(event4);
-        
+
         Participant p1 = Participant.builder().name("Namjoon").telNo("0811111111").eventHistories(new ArrayList<>()).build();
         Participant p2 = Participant.builder().name("Seokjin").telNo("0822222222").eventHistories(new ArrayList<>()).build();
         Participant p3 = Participant.builder().name("Yoongi").telNo("0833333333").eventHistories(new ArrayList<>()).build();

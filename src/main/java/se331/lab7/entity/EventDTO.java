@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se331.lab7.entity.dto.ParticipantDTO;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +22,5 @@ public class EventDTO {
     String time;
     Boolean petsAllowed;
     EventOrganizerDTO organizer;
+    List<ParticipantDTO> participants;
 }
