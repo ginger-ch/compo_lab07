@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import se331.lab7.entity.Organizer;
 import se331.lab7.repository.OrganizerRepository;
+import java.util.Optional;
 
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class OrganizerDaoDbImpl implements OrganizerDao {
     @Override
     public Page<Organizer> getOrganizer(Pageable pageRequest) {
         return organizerRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Optional<Organizer> findById(Long id) {
+        return organizerRepository.findById(id);
     }
 
 }

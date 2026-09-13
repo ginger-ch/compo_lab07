@@ -39,4 +39,6 @@ public class OrganizerServiceImpl implements OrganizerService {
     public Page<Organizer> getOrganizer(Integer page, Integer pageSize) {
         return organizerDao.getOrganizer(PageRequest.of(page, pageSize));
     }
+
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import se331.lab7.entity.Event;
+import se331.lab7.entity.Organizer;
 import se331.lab7.service.EventService;
 import se331.lab7.util.LabMapper;
 
@@ -59,7 +60,7 @@ public class EventController {
     }
 
     @PostMapping("/events")
-    public ResponseEntity<?> addEvent(@RequestBody Event event) {
+    public ResponseEntity<?> saveEvent(@RequestBody Event event) {
         Event output = eventService.save(event);
         return ResponseEntity.ok(LabMapper.INSTANCE.getEventDto(output));
     }

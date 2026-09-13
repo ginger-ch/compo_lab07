@@ -10,4 +10,5 @@ public interface OrganizerService {
     Organizer save(Organizer organizer);
     List<Organizer> getAllOrganizer();
     Page<Organizer> getOrganizer(Integer page, Integer pageSize);
+
 }

@@ -1,6 +1,7 @@
 package se331.lab7.dao;
 
 import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,5 +41,10 @@ public class OrganizerDaoImpl implements OrganizerDao {
     @Override
     public Page<Organizer> getOrganizer(Pageable pageRequest) {
         return organizerRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Optional<Organizer> findById(Long id) {
+        return organizerRepository.findById(id);
     }
 }
