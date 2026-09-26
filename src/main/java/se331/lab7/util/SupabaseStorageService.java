@@ -10,6 +10,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import jakarta.servlet.ServletException;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,5 +68,23 @@ public class SupabaseStorageService {
                 .build();
 
         return s3Presigner.presignGetObject(presignRequest).url().toString();
+    }
+
+    public StorageFileDTO uploadImage(MultipartFile file) throws ServletException, IOException {
+        String fileName = file.getOriginalFilename();
+        if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {
+            final String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+            String[] allowedExt = {"jpg", "jpeg", "png", "gif"};
+            for (String s : allowedExt) {
+                if (extension.equalsIgnoreCase(s)) {
+                    String urlName = this.uploadFile(file);
+                    return StorageFileDTO.builder()
+                            .name(urlName)
+                            .build();
+                }
+            }
+            throw new ServletException("file must be an image");
+        }
+        return null;
     }
 }
