@@ -29,5 +29,8 @@ public class Event {
 
     @ManyToMany(mappedBy = "eventHistories")
     List<Participant> participants = new ArrayList<>();
+
+    @ElementCollection
+    List<String> images = new ArrayList<>();
 }
 

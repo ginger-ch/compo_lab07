@@ -23,4 +23,5 @@ public class EventDTO {
     Boolean petsAllowed;
     EventOrganizerDTO organizer;
     List<ParticipantDTO> participants;
+    List<String> images;
 }
