@@ -17,6 +17,7 @@ public class Organizer {
     @EqualsAndHashCode.Exclude
     Long id;
     String name;
+    String image;
 
     @OneToMany(mappedBy = "organizer")
     @Builder.Default
