@@ -51,11 +51,10 @@
 package se331.lab7.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import se331.lab7.entity.Organizer;
 import se331.lab7.service.OrganizerService;
 import se331.lab7.util.LabMapper;
@@ -73,5 +72,14 @@ public class OrganizerController {
     public ResponseEntity<?> addOrganizer(@RequestBody Organizer organizer) {
         Organizer output = organizerService.save(organizer);
         return ResponseEntity.ok(output);
+    }
+    @GetMapping("/organizers/{id}")
+    public ResponseEntity<?> getOrganizer(@PathVariable("id") Long id) {
+        Organizer output = organizerService.getOrganizer(id);
+        if (output != null) {
+            return ResponseEntity.ok(output);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The given id is not found");
+        }
     }
 }
