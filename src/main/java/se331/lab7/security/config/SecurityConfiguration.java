@@ -16,33 +16,33 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-  private final JwtAuthenticationFilter jwtAuthFilter;
-  private final LogoutHandler logoutHandler;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final LogoutHandler logoutHandler;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    http.headers((headers) -> {
-      headers.frameOptions((frameOptions) -> frameOptions.disable());
-    });
-    http
-            .csrf((crsf) -> crsf.disable())
+        http.headers((headers) -> {
+            headers.frameOptions((frameOptions) -> frameOptions.disable());
+        });
+        http
+                .csrf((csrf) -> csrf.disable())
+                .authorizeHttpRequests((authorize) -> authorize
+                        //อนุญาตเฉพาะpath auth เข้าได้เลย ไม่ต้องมีtoken
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        //ทุกpathที่เหลือ(รวม /events) ต้องยืนยันตัวตนก่อน
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement((session) -> {
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout((logout) -> {
+                    logout.logoutUrl("/api/v1/auth/logout");
+                    logout.addLogoutHandler(logoutHandler);
+                    logout.logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+                });
 
-
-            .sessionManagement((session) ->{
-              session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            })
-
-
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .logout((logout) -> {
-              logout.logoutUrl("/api/v1/auth/logout");
-              logout.addLogoutHandler(logoutHandler);
-              logout.logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
-            })
-    ;
-
-    return http.build();
-
-  }
+        return http.build();
+    }
 }
