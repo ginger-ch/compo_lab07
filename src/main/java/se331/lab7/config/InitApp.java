@@ -3,6 +3,8 @@ package se331.lab7.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se331.lab7.entity.Event;
 import se331.lab7.entity.Organizer;
@@ -11,6 +13,9 @@ import se331.lab7.repository.EventRepository;
 import se331.lab7.repository.OrganizerRepository;
 import jakarta.transaction.Transactional;
 import se331.lab7.repository.ParticipantRepository;
+import se331.lab7.security.user.Role;
+import se331.lab7.security.user.User;
+import se331.lab7.security.user.UserRepository;
 
 import java.util.ArrayList;
 
@@ -20,6 +25,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     final EventRepository eventRepository;
     final OrganizerRepository organizerRepository;
     final ParticipantRepository participantRepository;
+    final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -81,6 +87,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         event4.setOrganizer(org3);
         org3.getOwnEvents().add(event4);
 
+
         Participant p1 = Participant.builder().name("Namjoon").telNo("0811111111").eventHistories(new ArrayList<>()).build();
         Participant p2 = Participant.builder().name("Seokjin").telNo("0822222222").eventHistories(new ArrayList<>()).build();
         Participant p3 = Participant.builder().name("Yoongi").telNo("0833333333").eventHistories(new ArrayList<>()).build();
@@ -108,7 +115,49 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         participantRepository.save(p3);
         participantRepository.save(p4);
         participantRepository.save(p5);
+
+        addUser();
     }
 
+    User user1, user2, user3;
+    private void addUser() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        user1 = User.builder()
+                .username("admin")
+                .password(encoder.encode("admin"))
+                .firstname("admin")
+                .lastname("admin")
+                .email("admin@admin.com")
+                .enabled(true)
+                .build();
+
+        user2 = User.builder()
+                .username("user")
+                .password(encoder.encode("user"))
+                .firstname("user")
+                .lastname("user")
+                .email("enabled@user.com")
+                .enabled(true)
+                .build();
+
+        user3 = User.builder()
+                .username("disableUser")
+                .password(encoder.encode("disableUser"))
+                .firstname("disableUser")
+                .lastname("disableUser")
+                .email("disableUser@user.com")
+                .enabled(false)
+                .build();
+
+        user1.getRoles().add(Role.ROLE_USER);
+        user1.getRoles().add(Role.ROLE_ADMIN);
+
+        user2.getRoles().add(Role.ROLE_USER);
+        user3.getRoles().add(Role.ROLE_USER);
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+    }
 
 }

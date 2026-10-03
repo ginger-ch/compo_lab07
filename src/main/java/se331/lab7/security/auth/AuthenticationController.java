@@ -30,7 +30,7 @@ public class AuthenticationController {
   ) {
     AuthenticationResponse result = service.authenticate(request);
     return ResponseEntity.ok(result);
-  }
+  } //methodนี้ handle req ข้อ 2.3 จ้า
 
   @PostMapping("/refresh-token")
   public void refreshToken(
