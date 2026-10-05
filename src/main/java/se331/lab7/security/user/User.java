@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import se331.lab7.entity.Organizer;
 import se331.lab7.security.token.Token;
 
 import java.util.ArrayList;
@@ -76,4 +77,7 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return enabled;
   }
+
+    @OneToOne(mappedBy = "user")
+    Organizer organizer;
 }

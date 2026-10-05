@@ -2,6 +2,7 @@ package se331.lab7.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import se331.lab7.security.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,4 +23,7 @@ public class Organizer {
     @OneToMany(mappedBy = "organizer")
     @Builder.Default
     List<Event> ownEvents = new ArrayList<>();
+
+    @OneToOne
+    User user;
 }
